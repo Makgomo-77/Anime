@@ -1,1 +1,24 @@
+body {
+  background-color: #000;
+  color: white;
+}
 
+.card {
+  background-color: #141414;
+  border: none;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  height: 320px;
+  object-fit: cover;
+}
+
+.modal-content {
+  border-radius: 10px;
+}
