@@ -1,1 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AniVerse - Anime Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-black">
+  <div class="container">
+    <a class="navbar-brand text-warning fw-bold">🎌 AniVerse</a>
+    <form class="d-flex" id="searchForm">
+      <input class="form-control me-2" type="search" placeholder="Search anime..." id="searchInput">
+      <button class="btn btn-warning">Search</button>
+    </form>
+  </div>
+</nav>
+
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Trending Anime</h2>
+    <button class="btn btn-outline-warning" onclick="showFavorites()">⭐ Favorites</button>
+  </div>
+
+  <div id="loader" class="text-center my-5 d-none">
+    <div class="spinner-border text-warning"></div>
+  </div>
+
+  <div class="row" id="animeContainer"></div>
+
+  <div class="text-center mt-4">
+    <button class="btn btn-warning" onclick="loadMore()">Load More</button>
+  </div>
+</div>
+
+<!-- Anime Details Modal -->
+<div class="modal fade" id="animeModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-body" id="modalContent"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
