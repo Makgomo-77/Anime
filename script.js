@@ -5,9 +5,14 @@ let currentPage = 1;
 
 // GraphQL Query
 const animeQuery = `
-query ($page: Int, $search: String) {
+query ($page: Int, $search: String, $genre: String) {
   Page(page: $page, perPage: 12) {
-    media(search: $search, sort: TRENDING_DESC, type: ANIME) {
+    media(
+      search: $search,
+      genre: $genre,
+      sort: TRENDING_DESC,
+      type: ANIME
+    ) {
       id
       title { romaji }
       description
@@ -20,7 +25,8 @@ query ($page: Int, $search: String) {
 }
 `;
 
-async function fetchAnime(page = 1, search = "") {
+
+async function fetchAnime(page = 1, search = "", genre = "") {
   loader.classList.remove("d-none");
 
   const response = await fetch(API_URL, {
@@ -28,7 +34,7 @@ async function fetchAnime(page = 1, search = "") {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query: animeQuery,
-      variables: { page, search }
+      variables: { page, search, genre }
     })
   });
 
@@ -59,7 +65,16 @@ function displayAnime(animeList, append = false) {
     animeContainer.appendChild(col);
   });
 }
+async function filterByGenre(genre) {
+  currentGenre = genre;
+  currentSearch = "";
+  currentPage = 1;
 
+  setActiveButton(genre);
+
+  const data = await fetchAnime(currentPage, "", currentGenre);
+  displayAnime(data);
+}
 async function showDetails(id) {
   const anime = await fetchAnime(1);
   const selected = anime.find(a => a.id === id);
@@ -75,17 +90,26 @@ async function showDetails(id) {
 
   new bootstrap.Modal(document.getElementById("animeModal")).show();
 }
+function setActiveButton(selectedGenre) {
+  const buttons = document.querySelectorAll("#categoryButtons button");
 
-function addFavorite(event, id) {
-  event.stopPropagation();
-  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-  if (!favorites.includes(id)) {
-    favorites.push(id);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    alert("Added to favorites!");
-  }
+  buttons.forEach(btn => {
+    btn.classList.remove("active");
+    if (btn.textContent === selectedGenre || 
+        (selectedGenre === "" && btn.textContent === "All")) {
+      btn.classList.add("active");
+    }
+  });
 }
+
+document.getElementById("searchForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  currentPage = 1;
+  currentSearch = document.getElementById("searchInput").value;
+
+  const data = await fetchAnime(currentPage, currentSearch, currentGenre);
+  displayAnime(data);
+});
 
 function showFavorites() {
   const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
