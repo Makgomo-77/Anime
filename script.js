@@ -1,3 +1,8 @@
+
+
+let currentPage = 1;
+let currentGenre = "";
+let currentSearch = "";
 const API_URL = "https://graphql.anilist.co";
 const animeContainer = document.getElementById("animeContainer");
 const loader = document.getElementById("loader");
